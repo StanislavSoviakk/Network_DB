@@ -1,5 +1,6 @@
 package com.example.task3_network_db.data.remote.dto
 
+import com.example.task3_network_db.data.local.entity.UserEntity
 import com.example.task3_network_db.domain.model.User
 
 data class RandomUsersResponse(
@@ -93,6 +94,20 @@ data class RandomUsersResponse(
 
 fun RandomUsersResponse.Result.toUser(): User {
     return User(
+        firstName = name.first,
+        lastName = name.last,
+        title = name.title,
+        gender = gender,
+        phone = phone,
+        country = location.country,
+        email = email,
+        picture = picture.medium,
+        uuid = login.uuid
+    )
+}
+
+fun RandomUsersResponse.Result.toUserEntity(): UserEntity {
+    return UserEntity(
         firstName = name.first,
         lastName = name.last,
         title = name.title,
