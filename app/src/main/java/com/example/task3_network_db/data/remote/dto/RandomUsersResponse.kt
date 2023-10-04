@@ -101,5 +101,6 @@ fun RandomUsersResponse.Result.toUser(): User {
         country = location.country,
         email = email,
         picture = picture.medium,
+        uuid = login.uuid
     )
 }

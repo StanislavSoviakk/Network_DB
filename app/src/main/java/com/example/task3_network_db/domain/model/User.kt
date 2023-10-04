@@ -9,4 +9,5 @@ data class User(
     val country: String,
     val email: String,
     val picture: String,
+    val uuid: String
 )

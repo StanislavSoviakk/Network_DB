@@ -5,10 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.task3_network_db.data.repository.RandomUsersRepositoryImpl
-import com.example.task3_network_db.domain.use_case.GetUsersListUseCase
 import com.example.task3_network_db.domain.model.User
+import com.example.task3_network_db.domain.use_case.GetUsersListUseCase
 import com.example.task3_network_db.utils.Constants
-import com.example.task3_network_db.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -33,17 +32,18 @@ class UsersListViewModel : ViewModel() {
     private fun loadUsers() {
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.postValue(true)
-            when (val usersResponse = getUsersListUseCase()) {
-                is Resource.Error -> {
+            val usersResponse = getUsersListUseCase()
+            usersResponse.fold(
+                onFailure = {
                     _isLoading.postValue(false)
-                    _error.postValue(usersResponse.message)
-                }
+                    _error.postValue(it.message)
+                },
+                onSuccess = {
+                    _isLoading.postValue(false)
+                    _usersList.postValue(it)
 
-                is Resource.Success -> {
-                    _isLoading.postValue(false)
-                    _usersList.postValue(usersResponse.data.orEmpty())
                 }
-            }
+            )
         }
     }
 }

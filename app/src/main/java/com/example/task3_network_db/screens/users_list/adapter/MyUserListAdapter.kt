@@ -29,7 +29,7 @@ class MyUserListAdapter(
 
     private class UserDiffCallback : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(oldUser: User, newUser: User): Boolean {
-            return oldUser.firstName == newUser.firstName && oldUser.lastName == newUser.lastName
+            return oldUser.uuid == newUser.uuid
         }
 
         override fun areContentsTheSame(oldUser: User, newUser: User): Boolean {

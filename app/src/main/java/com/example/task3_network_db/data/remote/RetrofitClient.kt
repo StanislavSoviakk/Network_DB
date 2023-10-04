@@ -1,6 +1,5 @@
-package com.example.task3_network_db.domain
+package com.example.task3_network_db.data.remote
 
-import com.example.task3_network_db.data.remote.RandomUsersApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
