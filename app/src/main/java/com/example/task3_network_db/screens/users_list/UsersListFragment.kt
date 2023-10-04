@@ -8,9 +8,11 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.task3_network_db.R
 import com.example.task3_network_db.data.local.DatabaseClient
 import com.example.task3_network_db.databinding.FragmentUsersListBinding
 import com.example.task3_network_db.domain.model.User
+import com.example.task3_network_db.screens.details.UserDetailsFragment
 import com.example.task3_network_db.screens.users_list.adapter.MyUserListAdapter
 
 class UsersListFragment : Fragment() {
@@ -28,7 +30,7 @@ class UsersListFragment : Fragment() {
     }
 
     private fun onItemClick(user: User) {
-        showUserDetailsScreen(user)
+        showUserDetailsScreen(user.uuid)
     }
 
     override fun onCreateView(
@@ -68,11 +70,11 @@ class UsersListFragment : Fragment() {
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
     }
 
-    private fun showUserDetailsScreen(user: User) {
-//        activity?.supportFragmentManager
-//            ?.beginTransaction()
-//            ?.replace(R.id.fragmentContainerView, UserDetailsFragment.newInstance(user))
-//            ?.addToBackStack(null)
-//            ?.commit()
+    private fun showUserDetailsScreen(userId: String) {
+        activity?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragmentContainerView, UserDetailsFragment.newInstance(userId))
+            ?.addToBackStack(null)
+            ?.commit()
     }
 }

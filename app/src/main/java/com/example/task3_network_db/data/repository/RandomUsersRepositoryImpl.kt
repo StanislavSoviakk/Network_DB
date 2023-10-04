@@ -30,6 +30,10 @@ class RandomUsersRepositoryImpl : RandomUsersRepository {
         }
     }
 
+    override suspend fun getUserById(userId: String, dao: UserDao): User {
+        return dao.getUserById(userId).toUser()
+    }
+
     private suspend fun loadUsersFromLocalDB(dao: UserDao): Result<List<User>> {
         return runCatching {
             val users = dao.getAllUsers().map { it.toUser() }
