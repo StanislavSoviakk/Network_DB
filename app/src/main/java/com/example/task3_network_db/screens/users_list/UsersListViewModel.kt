@@ -17,8 +17,8 @@ class UsersListViewModel : ViewModel() {
     private val getUsersListUseCase =
         GetUsersListUseCase(RandomUsersRepositoryImpl(), Constants.USERS_RESULT_NUMBER)
 
-    private val _itemsList = MutableLiveData<List<User>>()
-    val itemsList: LiveData<List<User>> = _itemsList
+    private val _usersList = MutableLiveData<List<User>>()
+    val usersList: LiveData<List<User>> = _usersList
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -41,7 +41,7 @@ class UsersListViewModel : ViewModel() {
 
                 is Resource.Success -> {
                     _isLoading.postValue(false)
-                    _itemsList.postValue(usersResponse.data.orEmpty())
+                    _usersList.postValue(usersResponse.data.orEmpty())
                 }
             }
         }

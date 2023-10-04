@@ -44,8 +44,8 @@ class UsersListFragment : Fragment() {
     }
 
     private fun initObserver() {
-        viewModel.itemsList.observe(viewLifecycleOwner) { itemsList ->
-            showItems(itemsList)
+        viewModel.usersList.observe(viewLifecycleOwner) { usersList ->
+            showUsers(usersList)
         }
         viewModel.error.observe(viewLifecycleOwner) { error ->
             error?.let {
@@ -61,8 +61,8 @@ class UsersListFragment : Fragment() {
         }
     }
 
-    private fun showItems(itemsList: List<User>) {
-        listAdapter.submitList(itemsList)
+    private fun showUsers(UsersList: List<User>) {
+        listAdapter.submitList(UsersList)
     }
 
     private fun handleError(error: String?) {
