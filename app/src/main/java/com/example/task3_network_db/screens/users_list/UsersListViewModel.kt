@@ -25,7 +25,7 @@ class UsersListViewModel(private val getUsersListUseCase: GetUsersListUseCase) :
         loadUsers()
     }
 
-    private fun loadUsers() {
+    fun loadUsers() {
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.postValue(true)
             val usersResponse = getUsersListUseCase(Constants.USERS_RESULT_NUMBER)
@@ -36,7 +36,8 @@ class UsersListViewModel(private val getUsersListUseCase: GetUsersListUseCase) :
                 },
                 onSuccess = {
                     _isLoading.postValue(false)
-                    _usersList.postValue(it)
+                    val newList: List<User> = (usersList.value ?: emptyList()) + it
+                    _usersList.postValue(newList)
 
                 }
             )

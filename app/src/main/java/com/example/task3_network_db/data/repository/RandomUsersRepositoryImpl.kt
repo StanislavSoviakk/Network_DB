@@ -10,6 +10,8 @@ import com.example.task3_network_db.domain.repository.RandomUsersRepository
 import java.io.IOException
 
 class RandomUsersRepositoryImpl(private val dao: UserDao) : RandomUsersRepository {
+
+    private var firstRequest = true
     override suspend fun getRandomUsers(
         api: RandomUsersApi, results: Int
     ): Result<List<User>> {
@@ -19,7 +21,10 @@ class RandomUsersRepositoryImpl(private val dao: UserDao) : RandomUsersRepositor
             val result = response.body()?.results
 
             if (!result.isNullOrEmpty()) {
-                dao.clearDB()
+                if (firstRequest) {
+                    dao.clearDB()
+                    firstRequest = false
+                }
                 dao.insertUsers(result.map { it.toUserEntity() })
                 Result.success(result.map { it.toUser() })
             } else {
@@ -36,9 +41,13 @@ class RandomUsersRepositoryImpl(private val dao: UserDao) : RandomUsersRepositor
 
     private suspend fun loadUsersFromLocalDB(): Result<List<User>> {
         return runCatching {
-            val users = dao.getAllUsers().map { it.toUser() }
-            if (users.isEmpty()) {
-                throw RuntimeException("Remote request failure")
+            var users = listOf<User>()
+            if (firstRequest) {
+                firstRequest = false
+                users = dao.getAllUsers().map { it.toUser() }
+                if (users.isEmpty()) {
+                    throw RuntimeException("Remote request failure")
+                }
             }
 
             users

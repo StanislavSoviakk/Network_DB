@@ -10,8 +10,11 @@ import com.example.task3_network_db.R
 import com.example.task3_network_db.databinding.FragmentUsersListItemBinding
 import com.example.task3_network_db.domain.model.User
 
+private const val PREFETCH_DISTANCE = 5
+
 class MyUserListAdapter(
-    private val onItemClick: (user: User) -> Unit
+    private val onItemClick: (user: User) -> Unit,
+    private val onListEndReached: () -> Unit
 ) : ListAdapter<User, MyUserListAdapter.ViewHolder>(UserDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,6 +28,10 @@ class MyUserListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
+
+        if (itemCount - position == PREFETCH_DISTANCE) {
+            onListEndReached()
+        }
     }
 
     private class UserDiffCallback : DiffUtil.ItemCallback<User>() {

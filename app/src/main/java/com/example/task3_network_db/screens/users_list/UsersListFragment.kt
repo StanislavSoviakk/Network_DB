@@ -34,9 +34,14 @@ class UsersListFragment : Fragment() {
     }
 
     private val listAdapter by lazy {
-        MyUserListAdapter {
-            showUserDetailsScreen(it.uuid)
-        }
+        MyUserListAdapter(
+            onItemClick = {
+                showUserDetailsScreen(it.uuid)
+            },
+            onListEndReached = {
+                viewModel.loadUsers()
+            }
+        )
     }
 
     override fun onCreateView(
