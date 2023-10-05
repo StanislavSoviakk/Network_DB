@@ -9,9 +9,9 @@ import com.example.task3_network_db.domain.model.User
 import com.example.task3_network_db.domain.repository.RandomUsersRepository
 import java.io.IOException
 
-class RandomUsersRepositoryImpl : RandomUsersRepository {
+class RandomUsersRepositoryImpl(private val dao: UserDao) : RandomUsersRepository {
     override suspend fun getRandomUsers(
-        api: RandomUsersApi, results: Int, dao: UserDao
+        api: RandomUsersApi, results: Int
     ): Result<List<User>> {
         return try {
             val response = api.getRandomUsers(results.toString())
@@ -23,18 +23,18 @@ class RandomUsersRepositoryImpl : RandomUsersRepository {
                 dao.insertUsers(result.map { it.toUserEntity() })
                 Result.success(result.map { it.toUser() })
             } else {
-                loadUsersFromLocalDB(dao)
+                loadUsersFromLocalDB()
             }
         } catch (e: IOException) {
-            loadUsersFromLocalDB(dao)
+            loadUsersFromLocalDB()
         }
     }
 
-    override suspend fun getUserById(userId: String, dao: UserDao): User {
+    override suspend fun getUserById(userId: String): User {
         return dao.getUserById(userId).toUser()
     }
 
-    private suspend fun loadUsersFromLocalDB(dao: UserDao): Result<List<User>> {
+    private suspend fun loadUsersFromLocalDB(): Result<List<User>> {
         return runCatching {
             val users = dao.getAllUsers().map { it.toUser() }
             if (users.isEmpty()) {

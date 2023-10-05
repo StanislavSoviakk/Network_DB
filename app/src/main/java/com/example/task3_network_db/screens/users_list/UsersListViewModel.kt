@@ -4,18 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.task3_network_db.data.local.UserDao
-import com.example.task3_network_db.data.repository.RandomUsersRepositoryImpl
 import com.example.task3_network_db.domain.model.User
 import com.example.task3_network_db.domain.use_case.GetUsersListUseCase
 import com.example.task3_network_db.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UsersListViewModel(userDao: UserDao) : ViewModel() {
-
-    private val getUsersListUseCase =
-        GetUsersListUseCase(RandomUsersRepositoryImpl(), Constants.USERS_RESULT_NUMBER, userDao)
+class UsersListViewModel(private val getUsersListUseCase: GetUsersListUseCase) : ViewModel() {
 
     private val _usersList = MutableLiveData<List<User>>()
     val usersList: LiveData<List<User>> = _usersList
@@ -33,7 +28,7 @@ class UsersListViewModel(userDao: UserDao) : ViewModel() {
     private fun loadUsers() {
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.postValue(true)
-            val usersResponse = getUsersListUseCase()
+            val usersResponse = getUsersListUseCase(Constants.USERS_RESULT_NUMBER)
             usersResponse.fold(
                 onFailure = {
                     _isLoading.postValue(false)
