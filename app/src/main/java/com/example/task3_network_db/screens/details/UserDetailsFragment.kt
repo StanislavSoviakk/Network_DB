@@ -10,14 +10,16 @@ import com.example.task3_network_db.R
 import com.example.task3_network_db.databinding.FragmentUserDetailsBinding
 import com.example.task3_network_db.domain.model.User
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 private const val ARG_ID = "id"
 
 class UserDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentUserDetailsBinding
-    private val viewModel by viewModel<UserDetailsViewModel>()
-
+    private val viewModel by viewModel<UserDetailsViewModel> {
+        parametersOf(arguments?.getString(ARG_ID))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -31,7 +33,6 @@ class UserDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initObserver()
-        loadArguments()
     }
 
     private fun initObserver() {
@@ -47,12 +48,6 @@ class UserDetailsFragment : Fragment() {
                 context?.getString(R.string.user_full_name, user.firstName, user.lastName)
             textEmail.text = user.email
             textPhone.text = user.phone
-        }
-    }
-
-    private fun loadArguments() {
-        arguments?.getString(ARG_ID)?.let {
-            viewModel.loadUserById(it)
         }
     }
 

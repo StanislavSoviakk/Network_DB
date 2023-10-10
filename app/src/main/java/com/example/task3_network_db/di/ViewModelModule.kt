@@ -9,5 +9,5 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModel { UsersListViewModel(getUsersListUseCase = get()) }
 
-    viewModel { UserDetailsViewModel(getUserByIdUseCase = get()) }
+    viewModel { (userId: String) -> UserDetailsViewModel(getUserByIdUseCase = get(), userId = userId) }
 }

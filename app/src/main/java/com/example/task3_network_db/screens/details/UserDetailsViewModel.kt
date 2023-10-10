@@ -9,12 +9,17 @@ import com.example.task3_network_db.domain.use_case.GetUserByIdUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UserDetailsViewModel(private val getUserByIdUseCase: GetUserByIdUseCase) : ViewModel() {
+class UserDetailsViewModel(private val getUserByIdUseCase: GetUserByIdUseCase, userId: String) :
+    ViewModel() {
 
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> = _user
 
-    fun loadUserById(userId: String) {
+    init {
+        loadUserById(userId)
+    }
+
+    private fun loadUserById(userId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val user = getUserByIdUseCase(userId)
             _user.postValue(user)
