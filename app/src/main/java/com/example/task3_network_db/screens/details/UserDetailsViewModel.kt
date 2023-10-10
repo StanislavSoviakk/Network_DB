@@ -7,14 +7,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.task3_network_db.domain.model.User
 import com.example.task3_network_db.domain.use_case.GetUserByIdUseCase
+import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@HiltViewModel
 class UserDetailsViewModel @AssistedInject constructor(
-    private val getUserByIdUseCase: GetUserByIdUseCase, userId: String?
+    private val getUserByIdUseCase: GetUserByIdUseCase, @Assisted userId: String?
 ) : ViewModel() {
 
     private val _user = MutableLiveData<User>()
