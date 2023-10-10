@@ -7,10 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.task3_network_db.domain.model.User
 import com.example.task3_network_db.domain.use_case.GetUsersListUseCase
 import com.example.task3_network_db.utils.Constants
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UsersListViewModel(private val getUsersListUseCase: GetUsersListUseCase) : ViewModel() {
+@HiltViewModel
+class UsersListViewModel @Inject constructor(private val getUsersListUseCase: GetUsersListUseCase) : ViewModel() {
 
     private val _usersList = MutableLiveData<List<User>>()
     val usersList: LiveData<List<User>> = _usersList

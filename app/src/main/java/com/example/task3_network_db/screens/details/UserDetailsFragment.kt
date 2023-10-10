@@ -8,27 +8,24 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import coil.load
 import com.example.task3_network_db.R
-import com.example.task3_network_db.data.local.DatabaseClient
-import com.example.task3_network_db.data.repository.RandomUsersRepositoryImpl
 import com.example.task3_network_db.databinding.FragmentUserDetailsBinding
 import com.example.task3_network_db.domain.model.User
-import com.example.task3_network_db.domain.use_case.GetUserByIdUseCase
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 private const val ARG_ID = "id"
 
+@AndroidEntryPoint
 class UserDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentUserDetailsBinding
 
+    @Inject
+    lateinit var userDetailsViewModelFactory: UserDetailsViewModel.AssistedFactory
+
     private val viewModel: UserDetailsViewModel by viewModels {
-        UserDetailsViewModelFactory(
-            GetUserByIdUseCase(
-                RandomUsersRepositoryImpl(
-                    DatabaseClient.createDatabase(
-                        requireContext()
-                    ).dao
-                )
-            )
+        UserDetailsViewModel.provideFactory(
+            userDetailsViewModelFactory, arguments?.getString(ARG_ID)
         )
     }
 
@@ -44,7 +41,6 @@ class UserDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initObserver()
-        loadArguments()
     }
 
     private fun initObserver() {
@@ -60,12 +56,6 @@ class UserDetailsFragment : Fragment() {
                 context?.getString(R.string.user_full_name, user.firstName, user.lastName)
             textEmail.text = user.email
             textPhone.text = user.phone
-        }
-    }
-
-    private fun loadArguments() {
-        arguments?.getString(ARG_ID)?.let {
-            viewModel.loadUserById(it)
         }
     }
 
