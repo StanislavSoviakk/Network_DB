@@ -71,4 +71,13 @@ dependencies {
     //Room
     implementation "androidx.room:room-ktx:2.5.2"
     kapt "androidx.room:room-compiler:2.5.2"
+
+    //Koin
+    implementation "io.insert-koin:koin-core:3.2.0"
+    implementation "io.insert-koin:koin-android:3.2.0"
+
+//    implementation 'org.koin:koin-core:3.2.0-beta-1'
+//    implementation 'org.koin:koin-android:3.2.0'
+//    implementation 'org.koin:koin-android-viewmodel:3.2.0'
+//    implementation 'org.koin:koin-androidx-scope:3.2.0'
 }

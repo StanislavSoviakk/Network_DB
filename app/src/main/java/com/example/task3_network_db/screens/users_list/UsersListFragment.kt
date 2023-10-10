@@ -7,31 +7,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.example.task3_network_db.R
-import com.example.task3_network_db.data.local.DatabaseClient
-import com.example.task3_network_db.data.repository.RandomUsersRepositoryImpl
 import com.example.task3_network_db.databinding.FragmentUsersListBinding
 import com.example.task3_network_db.domain.model.User
-import com.example.task3_network_db.domain.use_case.GetUsersListUseCase
 import com.example.task3_network_db.screens.details.UserDetailsFragment
 import com.example.task3_network_db.screens.users_list.adapter.MyUserListAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UsersListFragment : Fragment() {
 
     private lateinit var binding: FragmentUsersListBinding
 
-    private val viewModel: UsersListViewModel by viewModels {
-        UsersListViewModelFactory(
-            GetUsersListUseCase(
-                RandomUsersRepositoryImpl(
-                    DatabaseClient.createDatabase(
-                        requireContext()
-                    ).dao
-                )
-            )
-        )
-    }
+    private val viewModel by viewModel<UsersListViewModel>()
 
     private val listAdapter by lazy {
         MyUserListAdapter(

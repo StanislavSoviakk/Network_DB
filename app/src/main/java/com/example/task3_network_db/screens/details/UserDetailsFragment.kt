@@ -5,32 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import coil.load
 import com.example.task3_network_db.R
-import com.example.task3_network_db.data.local.DatabaseClient
-import com.example.task3_network_db.data.repository.RandomUsersRepositoryImpl
 import com.example.task3_network_db.databinding.FragmentUserDetailsBinding
 import com.example.task3_network_db.domain.model.User
-import com.example.task3_network_db.domain.use_case.GetUserByIdUseCase
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val ARG_ID = "id"
 
 class UserDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentUserDetailsBinding
+    private val viewModel by viewModel<UserDetailsViewModel>()
 
-    private val viewModel: UserDetailsViewModel by viewModels {
-        UserDetailsViewModelFactory(
-            GetUserByIdUseCase(
-                RandomUsersRepositoryImpl(
-                    DatabaseClient.createDatabase(
-                        requireContext()
-                    ).dao
-                )
-            )
-        )
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
