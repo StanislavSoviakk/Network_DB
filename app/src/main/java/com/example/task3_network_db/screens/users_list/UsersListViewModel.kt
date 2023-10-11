@@ -29,18 +29,15 @@ class UsersListViewModel(private val getUsersListUseCase: GetUsersListUseCase) :
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.postValue(true)
             val usersResponse = getUsersListUseCase(Constants.USERS_RESULT_NUMBER)
-            usersResponse.fold(
-                onFailure = {
-                    _isLoading.postValue(false)
-                    _error.postValue(it.message)
-                },
-                onSuccess = {
-                    _isLoading.postValue(false)
-                    val newList: List<User> = (usersList.value ?: emptyList()) + it
-                    _usersList.postValue(newList)
+            usersResponse.fold(onFailure = {
+                _isLoading.postValue(false)
+                _error.postValue(it.message)
+            }, onSuccess = {
+                _isLoading.postValue(false)
+                val newList: List<User> = (usersList.value ?: emptyList()) + it
+                _usersList.postValue(newList)
 
-                }
-            )
+            })
         }
     }
 }

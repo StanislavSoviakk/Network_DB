@@ -8,11 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import coil.load
 import com.example.task3_network_db.R
-import com.example.task3_network_db.data.local.DatabaseClient
-import com.example.task3_network_db.data.repository.RandomUsersRepositoryImpl
 import com.example.task3_network_db.databinding.FragmentUserDetailsBinding
 import com.example.task3_network_db.domain.model.User
-import com.example.task3_network_db.domain.use_case.GetUserByIdUseCase
+import com.example.task3_network_db.getAppComponent
 
 private const val ARG_ID = "id"
 
@@ -21,15 +19,7 @@ class UserDetailsFragment : Fragment() {
     private lateinit var binding: FragmentUserDetailsBinding
 
     private val viewModel: UserDetailsViewModel by viewModels {
-        UserDetailsViewModelFactory(
-            GetUserByIdUseCase(
-                RandomUsersRepositoryImpl(
-                    DatabaseClient.createDatabase(
-                        requireContext()
-                    ).dao
-                )
-            )
-        )
+        getAppComponent().userDetailsViewModelFactory()
     }
 
     override fun onCreateView(

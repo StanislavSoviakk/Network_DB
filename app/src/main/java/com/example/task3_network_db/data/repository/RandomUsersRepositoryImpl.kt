@@ -8,8 +8,9 @@ import com.example.task3_network_db.data.remote.dto.toUserEntity
 import com.example.task3_network_db.domain.model.User
 import com.example.task3_network_db.domain.repository.RandomUsersRepository
 import java.io.IOException
+import javax.inject.Inject
 
-class RandomUsersRepositoryImpl(private val dao: UserDao) : RandomUsersRepository {
+class RandomUsersRepositoryImpl @Inject constructor(private val dao: UserDao) : RandomUsersRepository {
 
     private var firstRequest = true
     override suspend fun getRandomUsers(
