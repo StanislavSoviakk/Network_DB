@@ -11,6 +11,7 @@ import com.example.task3_network_db.R
 import com.example.task3_network_db.databinding.FragmentUserDetailsBinding
 import com.example.task3_network_db.domain.model.User
 import com.example.task3_network_db.getAppComponent
+import javax.inject.Inject
 
 private const val ARG_ID = "id"
 
@@ -18,13 +19,17 @@ class UserDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentUserDetailsBinding
 
+    @Inject
+    lateinit var factory: UserDetailsViewModelFactory
+
     private val viewModel: UserDetailsViewModel by viewModels {
-        getAppComponent().userDetailsViewModelFactory()
+        factory
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        getAppComponent().injectUserDetailFragment(this)
         binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
 
         return binding.root

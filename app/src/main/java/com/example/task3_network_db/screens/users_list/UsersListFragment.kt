@@ -14,13 +14,17 @@ import com.example.task3_network_db.domain.model.User
 import com.example.task3_network_db.getAppComponent
 import com.example.task3_network_db.screens.details.UserDetailsFragment
 import com.example.task3_network_db.screens.users_list.adapter.MyUserListAdapter
+import javax.inject.Inject
 
 class UsersListFragment : Fragment() {
 
     private lateinit var binding: FragmentUsersListBinding
 
+    @Inject
+    lateinit var factory: UsersListViewModelFactory
+
     private val viewModel: UsersListViewModel by viewModels {
-        getAppComponent().usersListViewModelFactory()
+        factory
     }
 
     private val listAdapter by lazy {
@@ -37,6 +41,7 @@ class UsersListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        getAppComponent().injectUsersListFragment(this)
         binding = FragmentUsersListBinding.inflate(inflater, container, false)
 
         return binding.root
